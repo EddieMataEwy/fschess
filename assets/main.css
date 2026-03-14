@@ -22,10 +22,10 @@ body {
 }
 
 #board {
-    max-height: 80vh;
-    height: 80vh;
-    width: 95%;
-    max-width: 95vw;
+    max-height: 80svh;
+    height: 80auto;
+    width: 95svw;
+    max-width: 95svw;
     aspect-ratio: 1 / 1;
 }
 
