@@ -1,0 +1,27 @@
+[application]
+
+asset_dir = "assets"
+
+out_dir = ""
+
+[web.app]
+
+# HTML title tag content
+title = "fschess"
+
+base_path = "fschess"
+
+# include `assets` in web platform
+[web.resource]
+
+# Additional CSS style files
+style = []
+
+# Additional JavaScript files
+script = []
+
+[web.resource.dev]
+
+# Javascript code file
+# serve: [dev-server] only
+script = []
