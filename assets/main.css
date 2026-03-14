@@ -23,8 +23,10 @@ body {
 
 #board {
     max-height: 80vh;
-    width: auto;
-    max-width: 95%;
+    height: 80vh;
+    width: 95%;
+    max-width: 95vw;
+    aspect-ratio: 1 / 1;
 }
 
 #buttons {

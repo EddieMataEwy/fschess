@@ -1,7 +1,5 @@
 [application]
 
-asset_dir = "assets"
-
 out_dir = ""
 
 [web.app]
