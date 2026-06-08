@@ -1,5 +1,3 @@
-use core::panic;
-
 use dioxus::prelude::*;
 use rand::prelude::*;
 
@@ -52,11 +50,11 @@ impl Piece {
     }
 }
 
-enum State {
-    Rook,
-    King,
-    Done,
-}
+// enum State {
+//     Rook,
+//     King,
+//     Done,
+// }
 
 fn main() {
     dioxus::launch(App);
@@ -101,45 +99,49 @@ pub fn Hero() -> Element {
         let mut pieces = pieces.write();
         *pieces = vec![0,1,2,3,4,5,6,7,8];
     };
+
     let generate = move |_| {
         let mut pieces = pieces.write();
-        let mut state = State::Rook;
-        let mut gen: Vec<usize> = vec![];
-        for _ in 0..8 {
-            let mut number = usize::MAX;
-            let mut cond = true;
-            while cond {
-                number = (rng.random::<f32>()*8.) as usize;
-                if number > 7 {number = 7;}
-                if !gen.contains(&number) {
-                    match state {
-                        State::Rook => {
-                            if number != 4 && number != 7 {
-                                cond = false;
-                                if number == 0 {
-                                    state = State::King;
-                                }
-                            }
-                        },
-                        State::King => {
-                            if number != 7 {
-                                cond = false;
-                                if number == 4 {
-                                    state = State::Done;
-                                }
-                            }
-                        },
-                        State::Done => {
-                            cond = false;
-                        },
-                    }
-                }
-            }
-            if number == usize::MAX {
-                panic!("Something went wrong");
-            }
-            gen.push(number);
-        }
+
+        let mut gen = vec![usize::MAX; 8];
+
+        // bishops on opposite colors
+        let left_bishop = [0, 2, 4, 6]
+            .choose(&mut rng)
+            .copied()
+            .unwrap();
+        let right_bishop = [1, 3, 5, 7]
+            .choose(&mut rng)
+            .copied()
+            .unwrap();
+
+        gen[left_bishop] = 2;
+        gen[right_bishop] = 5;
+
+        // queen
+        let mut empty: Vec<usize> =
+            (0..8).filter(|&i| gen[i] == usize::MAX).collect();
+
+        let queen = *empty.choose(&mut rng).unwrap();
+        gen[queen] = 3;
+
+        // knights
+        empty.retain(|&i| i != queen);
+        empty.shuffle(&mut rng);
+
+        gen[empty[0]] = 1;
+        gen[empty[1]] = 6;
+
+        // remaining squares are rook, king, rook from left to right
+        let mut remaining: Vec<usize> =
+            (0..8).filter(|&i| gen[i] == usize::MAX).collect();
+
+        remaining.sort();
+
+        gen[remaining[0]] = 0; // left rook
+        gen[remaining[1]] = 4; // king
+        gen[remaining[2]] = 7; // right rook
+
         *pieces = gen;
     };
     
