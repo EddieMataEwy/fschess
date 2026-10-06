@@ -22,11 +22,10 @@ body {
 }
 
 #board {
-    max-height: 80svh;
-    height: 80auto;
-    width: 95svw;
-    max-width: 95svw;
+    width: min(95svw, 80svh);
+    height: min(95svw, 80svh);
     aspect-ratio: 1 / 1;
+    box-sizing: border-box;
 }
 
 #buttons {
